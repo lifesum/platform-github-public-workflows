@@ -17,7 +17,7 @@ on:
 jobs:
   docker-image:
     runs-on: self-hosted
-    container: ${{ inputs.registry }}/esma:stable
+    container: ${{ input.registry_id }}.dkr.ecr.${{ input.region }}.amazonaws.com/esma:stable
     steps:
       - name: Clone repo
         uses: actions/checkout@v2
@@ -28,6 +28,7 @@ jobs:
       - name: Build image
         run: |
           esma setup -p || true
+          aws ecr get-login-password --region ${{ input.region }} | docker login --username AWS --password-stdin ${{ input.registry_id }}.dkr.ecr.${{ input.region }}.amazonaws.com
           esma service ecrbuild -d templates
         shell: bash
       - name: Upload packer-manifest.json
