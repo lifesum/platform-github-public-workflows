@@ -14,8 +14,6 @@ on:
         required: true
       DEPLOY_SSH_KEY:
         required: true
-      DEPLOY_REGISTRY:
-        required: true
 jobs:
   docker-image:
     runs-on: self-hosted
