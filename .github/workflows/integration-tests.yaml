@@ -6,6 +6,9 @@ on:
         required: true
         type: string
         default: "1.17.6"
+      registry:
+        required: true
+        type: string
     secrets:
       DEPLOY_PAT:
         required: true
@@ -16,7 +19,7 @@ on:
 jobs:
   docker-image:
     runs-on: self-hosted
-    container: ${{ secrets.DEPLOY_REGISTRY }}/esma:stable
+    container: ${{ inputs.registry }}/esma:stable
     steps:
       - name: Clone repo
         uses: actions/checkout@v2
