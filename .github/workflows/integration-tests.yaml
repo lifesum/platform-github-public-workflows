@@ -1,0 +1,69 @@
+name: integration-test
+on:
+  workflow_call:
+    inputs:
+      go_version:
+        required: true
+        type: string
+        default: "1.17.6"
+    secrets:
+      DEPLOY_PAT:
+        required: true
+      DEPLOY_SSH_KEY:
+        required: true
+      DEPLOY_REGISTRY:
+        required: true
+jobs:
+  docker-image:
+    runs-on: self-hosted
+    container: ${{ secrets.DEPLOY_REGISTRY }}/esma:stable
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+          token: ${{ secrets.DEPLOY_PAT }}
+          ssh-key: ${{ secrets.DEPLOY_SSH_KEY }}
+      - name: Build image
+        run: |
+          esma setup -p || true
+          esma service ecrbuild -d templates
+        shell: bash
+      - name: Upload packer-manifest.json
+        uses: actions/upload-artifact@v2
+        with:
+          name: manifest
+          path: packer-manifest.json
+  integration-test:
+    needs:
+      - docker-image
+    runs-on: self-hosted
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+          token: ${{ secrets.DEPLOY_PAT }}
+          ssh-key: ${{ secrets.DEPLOY_SSH_KEY }}
+      - name: Download packer-manifest.json
+        uses: actions/download-artifact@v2
+        with:
+          name: manifest
+      - name: Install go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ inputs.go_version }}
+      - run: go version
+      - name: Run integration tests
+        run: |
+          IMAGE=$(cat packer-manifest.json |jq  '.builds[-1].artifact_id' -r) make integration-test
+        shell: bash
+      - name: Clean up (
+        if: ${{ failure() }}
+        run: |
+          make integration-test-clean
+        shell: bash
+      - name: Clean up
+        run: |
+          make integration-test-clean
+        shell: bash
