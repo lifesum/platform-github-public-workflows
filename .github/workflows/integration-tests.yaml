@@ -6,7 +6,10 @@ on:
         required: true
         type: string
         default: "1.17.6"
-      registry:
+      region:
+        required: true
+        type: string
+      registry_id:
         required: true
         type: string
     secrets:
@@ -17,7 +20,7 @@ on:
 jobs:
   docker-image:
     runs-on: self-hosted
-    container: ${{ input.registry_id }}.dkr.ecr.${{ input.region }}.amazonaws.com/esma:stable
+    container: ${{ inputs.registry_id }}.dkr.ecr.${{ inputs.region }}.amazonaws.com/esma:stable
     steps:
       - name: Clone repo
         uses: actions/checkout@v2
@@ -28,7 +31,7 @@ jobs:
       - name: Build image
         run: |
           esma setup -p || true
-          aws ecr get-login-password --region ${{ input.region }} | docker login --username AWS --password-stdin ${{ input.registry_id }}.dkr.ecr.${{ input.region }}.amazonaws.com
+          aws ecr get-login-password --region ${{ inputs.region }} | docker login --username AWS --password-stdin ${{ inputs.registry_id }}.dkr.ecr.${{ inputs.region }}.amazonaws.com
           esma service ecrbuild -d templates
         shell: bash
       - name: Upload packer-manifest.json
