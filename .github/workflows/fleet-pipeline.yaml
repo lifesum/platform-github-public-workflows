@@ -1,0 +1,36 @@
+name: cd-pipeline
+on:
+  workflow_call:
+    inputs:
+      region:
+        required: true
+        type: string
+      registry_id:
+        required: true
+        type: string
+    secrets:
+      DEPLOY_PAT:
+        required: true
+      DEPLOY_SSH_KEY:
+        required: true
+      FLEET_PAT:
+        required: true
+jobs:
+  Image:
+    runs-on: self-hosted
+    container: ${{ inputs.registry_id }}.dkr.ecr.${{ inputs.region }}.amazonaws.com/esma:stable
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          token: ${{ secrets.DEPLOY_PAT }}
+          ssh-key: ${{ secrets.DEPLOY_SSH_KEY }}
+      - uses: actions/checkout@v2
+        with:
+          repository: lifesum/platform-build-pipeline-github-action
+          token: ${{ secrets.FLEET_PAT }}
+          path: .github/actions
+      - name: Build pipeline
+        uses: ./.github/actions
+        with:
+          fleet_pat: ${{ secrets.FLEET_PAT }}
