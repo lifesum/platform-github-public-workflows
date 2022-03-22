@@ -27,7 +27,7 @@ jobs:
       - name: Parse environment
         id: set-env
         run: |
-          cl=${{ inputs.commandline }}
+          cl="${{ inputs.commandline }}"
           env=${cl#"/deploy "}
           echo "::set-output name=environment::$env"
       - uses: actions/checkout@v2
