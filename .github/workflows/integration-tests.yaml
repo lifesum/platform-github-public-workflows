@@ -68,6 +68,11 @@ jobs:
         run: |
           make integration-test-clean
         shell: bash
+      - name: Run web integration tests
+        id: platform-web-integration
+        uses: circleci/trigger_circleci_pipeline
+        env:
+          CCI_TOKEN: ${{ secrets.CIRCLECI_TOKEN }}
       - name: Clean up
         run: |
           make integration-test-clean
