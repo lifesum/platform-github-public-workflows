@@ -30,7 +30,8 @@ jobs:
           repository: lifesum/platform-build-pipeline-github-action
           token: ${{ secrets.FLEET_PAT }}
           path: .github/actions
-      # - name: Build pipeline
-      #   uses: ./.github/actions
-      #   with:
-      #     fleet_pat: ${{ secrets.FLEET_PAT }}
+      - name: Build pipeline
+        uses: ./.github/actions
+        with:
+          fleet_pat: ${{ secrets.FLEET_PAT }}
+          fleet_branch: live
