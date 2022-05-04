@@ -69,7 +69,7 @@ jobs:
       #     make integration-test-clean
         # shell: bash
       - name: Run web integration tests
-        uses: stacknowledge/circleci-trigger-action@v0.1
+        uses: stacknowledge/circleci-trigger-action@v0.2
         with:
           id: platform-pipeline
           project: lifesum/web
