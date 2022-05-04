@@ -17,6 +17,8 @@ on:
         required: true
       DEPLOY_SSH_KEY:
         required: true
+      CIRCLECI_TOKEN:
+        required: true
 jobs:
   docker-image:
     runs-on: self-hosted
