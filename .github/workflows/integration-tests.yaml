@@ -59,15 +59,15 @@ jobs:
         with:
           go-version: ${{ inputs.go_version }}
       - run: go version
-      - name: Run integration tests
-        run: |
-          IMAGE=$(cat packer-manifest.json |jq  '.builds[-1].artifact_id' -r) make integration-test
-        shell: bash
-      - name: Clean up (
-        if: ${{ failure() }}
-        run: |
-          make integration-test-clean
-        shell: bash
+      # - name: Run integration tests
+      #   run: |
+      #     IMAGE=$(cat packer-manifest.json |jq  '.builds[-1].artifact_id' -r) make integration-test
+      #   shell: bash
+      # - name: Clean up (
+      #   if: ${{ failure() }}
+      #   run: |
+      #     make integration-test-clean
+        # shell: bash
       - name: Run web integration tests
         uses: stacknowledge/circleci-trigger-action@v0.1
         with:
