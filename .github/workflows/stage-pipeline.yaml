@@ -34,3 +34,12 @@ jobs:
         uses: ./.github/actions
         with:
           fleet_pat: ${{ secrets.FLEET_PAT }}
+      - name: Web integration tests
+        uses: stacknowledge/circleci-trigger-action@v0.2
+        continue-on-error: true
+        with:
+          id: platform-pipeline
+          project: lifesum/web
+          branch: master
+          token: ${{ secrets.CIRCLECI_TOKEN }}
+          timeout: 10
