@@ -22,20 +22,20 @@ jobs:
     runs-on: self-hosted
     container: ${{ inputs.registry_id }}.dkr.ecr.${{ inputs.region }}.amazonaws.com/esma:stable
     steps:
-      # - uses: actions/checkout@v2
-      #   with:
-      #     submodules: true
-      #     token: ${{ secrets.DEPLOY_PAT }}
-      #     ssh-key: ${{ secrets.DEPLOY_SSH_KEY }}
-      # - uses: actions/checkout@v2
-      #   with:
-      #     repository: lifesum/platform-build-pipeline-github-action
-      #     token: ${{ secrets.FLEET_PAT }}
-      #     path: .github/actions
-      # - name: Build pipeline
-      #   uses: ./.github/actions
-      #   with:
-      #     fleet_pat: ${{ secrets.FLEET_PAT }}
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          token: ${{ secrets.DEPLOY_PAT }}
+          ssh-key: ${{ secrets.DEPLOY_SSH_KEY }}
+      - uses: actions/checkout@v2
+        with:
+          repository: lifesum/platform-build-pipeline-github-action
+          token: ${{ secrets.FLEET_PAT }}
+          path: .github/actions
+      - name: Build pipeline
+        uses: ./.github/actions
+        with:
+          fleet_pat: ${{ secrets.FLEET_PAT }}
       - name: Web integration tests
         uses: stacknowledge/circleci-trigger-action@v0.2
         continue-on-error: true
