@@ -38,6 +38,7 @@ jobs:
           fleet_pat: ${{ secrets.FLEET_PAT }}
       - name: Web integration tests
         uses: stacknowledge/circleci-trigger-action@v0.2
+        if: ${{ secrets.CIRCLECI_TOKEN }}
         continue-on-error: true
         with:
           id: platform-pipeline
