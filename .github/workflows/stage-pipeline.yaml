@@ -15,8 +15,6 @@ on:
         required: true
       FLEET_PAT:
         required: true
-      CIRCLECI_TOKEN:
-        required: true
 jobs:
   Image:
     runs-on: self-hosted
