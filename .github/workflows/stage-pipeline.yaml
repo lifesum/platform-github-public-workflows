@@ -17,7 +17,6 @@ on:
         required: true
       CIRCLECI_TOKEN:
         required: false
-        type: string
 jobs:
   Image:
     runs-on: self-hosted
