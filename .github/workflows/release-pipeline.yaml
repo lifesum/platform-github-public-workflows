@@ -7,7 +7,7 @@ on:
         type: string
       registry_id:
         required: true
-	type: string
+        type: string
     secrets:
       DEPLOY_PAT:
         required: true
